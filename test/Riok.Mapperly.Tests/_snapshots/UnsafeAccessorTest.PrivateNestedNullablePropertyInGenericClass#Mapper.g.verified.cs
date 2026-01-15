@@ -7,7 +7,7 @@ public partial class Mapper
     partial global::B<int> Map(global::A<int> source)
     {
         var target = new global::B<int>();
-        BAccessor<int>.SetValue(target, AAccessor<int>.GetNested(source) != null ? CAccessor<int>.GetValue(AAccessor<int>.GetNested(source)) : default);
+        BAccessor<int>.SetValue((global::B<int>)(target), AAccessor<int>.GetNested((global::A<int>)(source)) != null ? CAccessor<int>.GetValue((global::C<int>)(AAccessor<int>.GetNested((global::A<int>)(source)))) : default);
         return target;
     }
 }

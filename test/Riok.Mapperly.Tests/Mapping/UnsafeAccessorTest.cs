@@ -773,4 +773,35 @@ public class UnsafeAccessorTest
 
         return TestHelper.VerifyGenerator(source);
     }
+
+    [Fact]
+    public Task ProtectedPropertyInDerivedFromGenericBaseClass()
+    {
+        var source = TestSourceBuilder.MapperWithBodyAndTypes(
+            "partial BDerived Map(ADerived source);",
+            TestSourceBuilderOptions.WithMemberVisibility(MemberVisibility.All),
+            "class ABase<T> { protected T Value { get; set; } }",
+            "class ADerived : ABase<string> { }",
+            "class BBase<T> { protected T Value { get; set; } }",
+            "class BDerived : BBase<string> { }"
+        );
+
+        return TestHelper.VerifyGenerator(source);
+    }
+
+    [Fact]
+    public Task ProtectedPropertyInDerivedFromGenericBaseClassWithInterface()
+    {
+        var source = TestSourceBuilder.MapperWithBodyAndTypes(
+            "partial BDerived Map(ADerived source);",
+            TestSourceBuilderOptions.WithMemberVisibility(MemberVisibility.All),
+            "interface IElement { }",
+            "class ABase<T> where T : IElement { protected T Value { get; set; } }",
+            "class ADerived : ABase<IElement> { }",
+            "class BBase<T> where T : IElement { protected T Value { get; set; } }",
+            "class BDerived : BBase<IElement> { }"
+        );
+
+        return TestHelper.VerifyGenerator(source);
+    }
 }

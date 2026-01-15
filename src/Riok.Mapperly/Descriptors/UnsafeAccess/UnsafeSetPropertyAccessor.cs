@@ -63,7 +63,9 @@ public class UnsafeSetPropertyAccessor(IPropertySymbol symbol, string className,
             return InvocationWithoutIndention(MemberAccess(baseAccess, methodName), valueToAssign);
         }
 
-        var args = new[] { baseAccess, valueToAssign };
+        // Cast baseAccess to the containing type to handle derived classes inheriting from generic base classes
+        var castedAccess = CastExpression(FullyQualifiedIdentifier(symbol.ContainingType), ParenthesizedExpression(baseAccess));
+        var args = new[] { (ExpressionSyntax)castedAccess, valueToAssign };
         var genericClassName = GenericName(className).WithTypeArgumentList(TypeArgumentList(symbol.ContainingType.TypeArguments));
         return InvocationExpression(MemberAccess(genericClassName, methodName)).WithArgumentList(ArgumentListWithoutIndention(args));
     }

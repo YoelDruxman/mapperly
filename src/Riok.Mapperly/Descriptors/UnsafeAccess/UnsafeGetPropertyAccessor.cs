@@ -57,9 +57,11 @@ public class UnsafeGetPropertyAccessor(IPropertySymbol symbol, string className,
             return InvocationWithoutIndention(method);
         }
 
+        // Cast baseAccess to the containing type to handle derived classes inheriting from generic base classes
+        var castedAccess = CastExpression(FullyQualifiedIdentifier(symbol.ContainingType), ParenthesizedExpression(baseAccess));
         var genericClassName = GenericName(className).WithTypeArgumentList(TypeArgumentList(symbol.ContainingType.TypeArguments));
         var invocation = InvocationExpression(MemberAccess(genericClassName, methodName))
-            .WithArgumentList(ArgumentListWithoutIndention([baseAccess]));
+            .WithArgumentList(ArgumentListWithoutIndention([castedAccess]));
 
         if (!nullConditional)
             return invocation;

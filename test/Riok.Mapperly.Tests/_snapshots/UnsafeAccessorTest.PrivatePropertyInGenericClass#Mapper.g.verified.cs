@@ -7,7 +7,7 @@ public partial class Mapper
     partial global::B<int> Map(global::A<int> source)
     {
         var target = new global::B<int>();
-        BAccessor<int>.SetValue(target, AAccessor<int>.GetValue(source));
+        BAccessor<int>.SetValue((global::B<int>)(target), AAccessor<int>.GetValue((global::A<int>)(source)));
         return target;
     }
 }
